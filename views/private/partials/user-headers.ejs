@@ -1,0 +1,25 @@
+<% if(status == null) {%>
+  <% var status = "" %>
+<%}%>
+
+<a class="<%= status %>" href="/wallet">wallet</a>
+<div class="account">
+  <p><%= navParams.account %>: <%= navParams.balance %>  <%= navParams.symbol %></p>
+  <input  type="image" src="/images/logout.png" id="logoutButton" onclick=logout()>
+</div>
+<script type="text/javascript" src="/scripts/common.js"></script>
+<script type="text/javascript">
+  function logout()
+  {
+    //const hostURL = "https://10.10.46.21:5054";
+
+    $.post(hostURL + "/logout", null)
+    .done(() => {
+      window.location.replace('/');
+    })
+    .fail((xhr, status, err) => {
+      console.log(err);
+      alert("Could not logout")
+    });
+  }
+</script>

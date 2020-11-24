@@ -1,0 +1,1 @@
+const hostURL = "https://10.10.46.21:5054";

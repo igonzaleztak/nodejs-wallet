@@ -1,0 +1,107 @@
+body {
+  padding-top: 0;
+  background-color: #e9ebee;
+}
+h1 {
+  margin: 20px 0px;
+}
+
+.container {
+  max-width: 1020px;
+  background-color: #f2f2f2;
+}
+
+p {
+  word-break: break-all;
+}  
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#loginBox {
+  padding: 80px;
+  text-align: center;
+}
+
+#box2 {
+  background-color: #f2f2f2;
+}
+
+#loginHeader {
+  padding: 18px;
+}
+
+.spaceBox {
+  padding: 12px 0;
+}
+#buttonLogin {
+  background-color: #4CAF50;
+  color: #f2f2f2;
+  border: 0ch;
+  height: 50px;
+  width: 30%;
+} 
+
+.account {
+  float: right;
+}
+
+.account p {
+  color: #f2f2f2;
+  float: left;
+  text-align: center;
+  text-decoration: none;
+  font-size: 17px;
+  padding-top: 10px;
+  margin-right: 10px;
+}
+
+#logoutButton{
+  padding-top: 10px;
+  height: 40px;
+}
+
+
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+th, td {
+  overflow: hidden;
+  word-wrap: break-word;
+  width: fit-content;
+}
+
+
+.my-custom-scrollbar {
+  position: relative;
+  height: 500px;
+  overflow: auto;
+  }
+
+.table-wrapper-scroll-y {
+  display: block;
+}

@@ -1,0 +1,8 @@
+{
+  "nodePath": "/home/administrator/demoPOA2/clients-node/",
+  "balanceContractAddr": "0xf2a0f8885b0C014fe369b8527a63161A1405eFDa",
+  "accessContractAddr": "0x0F47d696A98ABE52CfBC399f989A687dcF4791A2",
+  "dataContractAddr": "0x584430546B9D14135Cce4438190840a240d12E93",
+  "HTTPport": "5054",
+  "HTTPSport": "8054"
+}
