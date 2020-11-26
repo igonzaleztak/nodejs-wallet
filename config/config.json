@@ -4,5 +4,6 @@
   "accessContractAddr": "0x0F47d696A98ABE52CfBC399f989A687dcF4791A2",
   "dataContractAddr": "0x584430546B9D14135Cce4438190840a240d12E93",
   "HTTPport": "5054",
-  "HTTPSport": "8054"
+  "HTTPSport": "8054",
+  "IPFSaddr": "http://localhost:5001"
 }

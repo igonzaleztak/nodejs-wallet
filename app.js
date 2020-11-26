@@ -12,6 +12,7 @@ const common = require("./libs/common.js");
 const routes = require('./routes/index');
 const protectedRoutes = require('./routes/index_protected');
 
+const IpfsHttpClientLite = require('ipfs-http-client-lite')
 
 /***************** Global variables *********************/
 // JSON object with the configuration of the server
@@ -65,8 +66,11 @@ function init()
   const DataABI = require("./contracts/data.json");
   let dataSC = common.initContract(web3, DataABI, ConfigServer.dataContractAddr);
 
+  // Init IPFS client
+  const ipfs = IpfsHttpClientLite(ConfigServer.IPFSaddr);
+
   // Create struct that stores these parameters
-  let ethClient = {"web3": web3, "accessSC": accessSC, "balanceSC":balanceSC, "dataSC": dataSC, "config": ConfigServer};
+  let ethClient = {"web3": web3, "accessSC": accessSC, "balanceSC":balanceSC, "dataSC": dataSC, "config": ConfigServer, "ipfs": ipfs};
 
   return ethClient;
 }

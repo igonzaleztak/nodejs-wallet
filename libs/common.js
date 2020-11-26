@@ -234,6 +234,35 @@ function buf2hex(arrayBuffer)
 }
 
 
+/**
+ * Decrypts a message encrypted with AES-256-GMC
+ * @param {Buffer} key 
+ * @param {Buffer} secret 
+ */
+function decryptAES(key, secret)
+{
+  // Constant variables
+  const ivSize = 12;
+  const tagSize = 16;
+  
+  // Get the IV
+  let iv = secret.slice(0, ivSize);  
+
+  // Get the ciphertext 
+  let ciphertext = secret.slice(ivSize, secret.length - tagSize);
+  
+  // Get the authentication tag
+  let tag = secret.slice(secret.length - tagSize, secret.length)
+
+  // Decrypt the text
+  let decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);  
+  decipher.setAuthTag(tag)
+  let plaintext = Buffer.concat([decipher.update(ciphertext), decipher.final()]);
+
+  return plaintext
+}
+
+
 module.exports = {
   initContract, 
   getLastsBlocks,
@@ -244,5 +273,6 @@ module.exports = {
   getPublicKey,
   sendTransactionContract,
   signMessage,
-  buf2hex
+  buf2hex,
+  decryptAES
 }

@@ -153,37 +153,32 @@ function valueMeasurement(ethClient) {
       _from: clientAddr
     };
     let events = await ethClient.balanceSC.getPastEvents('CompletePurchase', {filter, fromBlock: 0});
-    let txHash = events[0].returnValues._txHash;
+    let txHash = events[events.length - 1].returnValues._txHash;
 
     // Get IoT address
     let iotAddr = (await ethClient.dataSC.methods.ledger(hash).call()).addr;
 
     // Get the encrypted url
-    let encryptedURL = (await ethClient.web3.eth.getTransaction(txHash)).input;
+    let secret = (await ethClient.web3.eth.getTransaction(txHash)).input;
     
-    // Decrypt the URL using the clients private key
-    let plainURL = String(eciesjs.decrypt(privKey, Buffer.from(encryptedURL.substring(2), 'hex')));
+    // Decrypt the URL and the symmetric key using the clients private key
+    let plainData = eciesjs.decrypt(privKey, Buffer.from(secret.substring(2), 'hex'));
+    let symmetricKey = plainData.slice(0, 32);
+    let cid = String(plainData.slice(32))
 
-    // Sign the body sig(clientAddr, hash, timestamp)
-    let timestamp = Date.now();
-    let msg = "" + clientAddr.substring(2) + hash.substring(2) + timestamp;
-    let signature = common.signMessage(msg, privKey);
 
-    let body = {
-      hash: hash.substring(2),
-      clientAddr: clientAddr.substring(2),
-      timestamp: timestamp, 
-      signature: common.buf2hex(signature.signature)
-    }
-    
-    // Do request to storage part
-    let response = await axios.post(plainURL, JSON.stringify(body)).catch((err) => {
-      console.log(err);
-      return 
-    });
+    // Query the url to obtain the data
+    let encryptedData = await ethClient.ipfs.cat(cid);
 
-    let measurement = response.data.measurement;
-    let mesurementString = JSON.stringify(measurement, null, 4)
+    // Decipher the measurement using the symmetric key
+    let plain = common.decryptAES(symmetricKey, encryptedData);
+
+    let measurement = plain.slice(0, plain.length-65 );
+    let signature = plain.slice(plain.length-64);
+
+    let r = ethClient.web3.utils.bytesToHex(signature.slice(0, 32));
+    let s =  ethClient.web3.utils.bytesToHex(signature.slice(32));
+
 
     // Get the top navigation bar parameters  
     let navParams = await common.getNavParams(req, ethClient);
@@ -191,10 +186,12 @@ function valueMeasurement(ethClient) {
     res.render('private/measurement', {
       navParams: navParams, 
       hash: hash, 
-      measurement: mesurementString,
+      measurement: measurement,
       txHash: txHash,
       clientAddr: clientAddr,
-      iotAddr: iotAddr
+      iotAddr: iotAddr,
+      r: r,
+      s: s
     });
   }
 }
