@@ -1,4 +1,4 @@
-const common = require("../libs/common.js");
+ const common = require("../libs/common.js");
 const eciesjs = require('eciesjs');
 const axios = require('axios');
 
