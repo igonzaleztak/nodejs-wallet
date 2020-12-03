@@ -66,8 +66,8 @@ function init()
   const DataABI = require("./contracts/data.json");
   let dataSC = common.initContract(web3, DataABI, ConfigServer.dataContractAddr);
 
-  // Init IPFS client
-  const ipfs = IpfsHttpClientLite(ConfigServer.IPFSaddr);
+  // Initialize ipfs client
+  const ipfs = IpfsHttpClientLite(ConfigServer.IPFSaddr)
 
   // Create struct that stores these parameters
   let ethClient = {"web3": web3, "accessSC": accessSC, "balanceSC":balanceSC, "dataSC": dataSC, "config": ConfigServer, "ipfs": ipfs};

@@ -2,7 +2,7 @@ const fs = require('fs');
 const Wallet = require('ethereumjs-wallet');
 const crypto = require('crypto');
 const secp256k1 = require('secp256k1');
-
+const fetch = require('node-fetch');
 
 /**
  * Initializes an instance of the contractç
@@ -263,6 +263,30 @@ function decryptAES(key, secret)
 }
 
 
+/**
+ * Fetchs the data store in the IPFS network by 
+ * using the IPFS HTTP API.
+ * @param {String} ipfsURL 
+ * @param {String} cid 
+ * @returns {Buffer}
+ */
+async function fetchIPFSData(ipfsURL, cid) {
+  // Prepare the url to fetch the data
+  url = ipfsURL + "/api/v0/cat?arg=" + cid
+
+  let data;
+
+  // Do post request to IPFS HTTP API url
+  await fetch(url, {method: 'POST'})
+  .then(res => res.buffer())
+  .then(res => {
+    data = res;
+  });
+
+  return data;
+}
+
+
 module.exports = {
   initContract, 
   getLastsBlocks,
@@ -274,5 +298,6 @@ module.exports = {
   sendTransactionContract,
   signMessage,
   buf2hex,
-  decryptAES
+  decryptAES,
+  fetchIPFSData
 }

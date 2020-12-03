@@ -5,5 +5,5 @@
   "dataContractAddr": "0x584430546B9D14135Cce4438190840a240d12E93",
   "HTTPport": "5054",
   "HTTPSport": "8054",
-  "IPFSaddr": "http://localhost:5001"
+  "IPFSaddr": "http://127.0.0.1:5001"
 }

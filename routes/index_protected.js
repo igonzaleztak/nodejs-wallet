@@ -1,6 +1,6 @@
- const common = require("../libs/common.js");
-const eciesjs = require('eciesjs');
-const axios = require('axios');
+const common = require("../libs/common.js");
+const ecies = require('eciesjs');
+
 
 /**
  * Destroys session cookie and redirects user to /
@@ -139,6 +139,7 @@ function purchaseMeasurement(ethClient) {
  */
 function valueMeasurement(ethClient) {
   return async function(req, res) {
+
     // Get the hash of the measurement
     let hash = req.params.hash;
     let clientAddr = ethClient.web3.utils.toChecksumAddress(req.session.userID);
@@ -160,15 +161,14 @@ function valueMeasurement(ethClient) {
 
     // Get the encrypted url
     let secret = (await ethClient.web3.eth.getTransaction(txHash)).input;
-    
-    // Decrypt the URL and the symmetric key using the clients private key
-    let plainData = eciesjs.decrypt(privKey, Buffer.from(secret.substring(2), 'hex'));
-    let symmetricKey = plainData.slice(0, 32);
-    let cid = String(plainData.slice(32))
 
+    // Decrypt the URL and the symmetric key using the clients private key
+    let plainData = ecies.decrypt(Buffer.from(privKey.substring(2), 'hex'), Buffer.from(secret.substring(2), 'hex'));
+    let symmetricKey = plainData.slice(0, 32);
+    let cid = String(plainData.slice(32));
 
     // Query the url to obtain the data
-    let encryptedData = await ethClient.ipfs.cat(cid);
+    let encryptedData = await common.fetchIPFSData(ethClient.config.IPFSaddr, cid);
 
     // Decipher the measurement using the symmetric key
     let plain = common.decryptAES(symmetricKey, encryptedData);
