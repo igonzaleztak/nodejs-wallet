@@ -6,3 +6,5 @@ The server is connected directly to one of the nodes of the Blockchain, so custo
 <p></p>
 
 The server is programmed using the `express` library of nodejs. The webpages are rendered dinamically using the technology `ejs`. 
+<p></p>
+For a more detailed information of the architecture of the marketplace check out the following <a href="https://github.com/igonzaleztak/marketplace">link</a>.
